@@ -1,0 +1,18 @@
+{
+  "name": "ir-person-detection",
+  "version": "1.0.0",
+  "description": "Rest API to retrieve IR image and classify for persond detection",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kevin Heath & Emanuel Lowcock",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "4.1.0",
+    "cors": "2.8.5",
+    "express": "4.17.1",
+    "morgan": "1.10.0",
+    "sharp": "0.27.0"
+  }
+}
