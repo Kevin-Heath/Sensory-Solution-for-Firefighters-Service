@@ -161,11 +161,11 @@ router.post('/classify-image', async (request, response) => {
                     // console.debug("right avg: " + right_avg + " | " + (right_avg/16)/24)
                         
                     var direction
-                    if(left_avg > (centre_avg || right_avg)){
+                    if(left_avg > centre_avg && left_avg > right_avg){
                         direction = 1
-                    } else if (centre_avg > (left_avg || right_avg)){
+                    } else if (centre_avg > left_avg &&  centre_avg > right_avg){
                         direction = 2
-                    } else if (right_avg > (left_avg || centre_avg)){
+                    } else if (right_avg > left_avg && right_avg > centre_avg){
                         direction = 3
                     } else {
                         direction = 4
