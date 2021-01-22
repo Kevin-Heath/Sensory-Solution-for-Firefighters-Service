@@ -4,7 +4,7 @@ const router = express.Router();
 const sharp = require('sharp')
 
 // Load the inferencing WebAssembly module
-const Module = require('./edge-impulse-standalone');
+const Module = require('../edge-impulse/edge-impulse-standalone');
 const fs = require('fs');
 const { cpuUsage } = require('process');
 
@@ -104,17 +104,20 @@ router.post('/classify-image', async (request, response) => {
             .then(() => {
                 let result = {"hasPerson":false}
                 let classifier_result = classifier.classify(raw_features);
-                
+               
                 no_person_value = 0
                 person_value = 0
+
+                console.log(classifier_result)
+
                 if(classifier_result["results"][0]["label"] === "no person"){
                     no_person_value = classifier_result["results"][0]["value"]
                 } else {
                     throw new Error("Invalid Model Classification Post Processing")
                 }
 
-                if(classifier_result["results"][3]["label"] === "person"){
-                    person_value = classifier_result["results"][3]["value"]
+                if(classifier_result["results"][1]["label"] === "person"){
+                    person_value = classifier_result["results"][1]["value"]
                 } else {
                     throw Error("Invalid Model Classification Post Processing")
                 }
@@ -123,12 +126,12 @@ router.post('/classify-image', async (request, response) => {
                 console.log("No Person Value:" + no_person_value)
 
                 //CONFIGURE THESE TUNING PARAMETERS:
-                person_threshold = 0.8
-                no_person_threshold = 0.2
+                person_threshold = 0.90
+                no_person_threshold = 0.1
 
                 if(person_value > person_threshold && no_person_value < no_person_threshold){
                     result["hasPerson"] = true
-                    // If is person fight brightspot in the image
+                    // If is person find brightspot in the image
                     let frame_data = request.body.frame
                     let column_average = new Array(32)
 
